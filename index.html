@@ -35,34 +35,41 @@
             --accent: #10b981;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
+            overflow: hidden; /* Запрещаем скролл на ПК */
         }
 
         .app-container {
             width: 100%;
-            max-width: 680px;
-            min-height: 100vh;
+            max-width: 700px;
+            height: 95vh;
             background: var(--surface);
             display: flex;
             flex-direction: column;
-            border-left: 1px solid var(--border);
-            border-right: 1px solid var(--border);
-            box-shadow: 0 0 100px rgba(0,0,0,0.5);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+            overflow-y: auto; /* Разрешаем скролл только если нужно */
+        }
+
+        @media (min-width: 768px) {
+            .app-container {
+                height: 90vh;
+                overflow: hidden; /* На ПК — без скролла */
+            }
         }
 
         header {
-            padding: 25px 30px;
+            padding: 15px 20px;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
@@ -75,28 +82,29 @@
         }
 
         .logo {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             letter-spacing: -0.5px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
         .logo i { color: var(--kofi-color); }
 
         .content {
-            padding: 30px;
+            padding: 20px;
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 15px;
+            overflow-y: auto;
         }
 
-        /* Upload Zone - FIXED FOR MOBILE */
+        /* Upload Zone */
         .upload-zone {
             border: 2px dashed var(--border);
-            border-radius: 20px;
-            padding: 50px 20px;
+            border-radius: 16px;
+            padding: 25px 15px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -108,96 +116,38 @@
             background: rgba(255, 221, 0, 0.03);
         }
         .upload-icon {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             color: var(--text-muted);
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             transition: 0.3s;
         }
-        .upload-zone:hover .upload-icon { color: var(--kofi-color); transform: translateY(-5px); }
+        .upload-zone:hover .upload-icon { color: var(--kofi-color); transform: translateY(-3px); }
         
         .file-count-badge {
             position: absolute;
-            top: -12px;
-            right: 20px;
+            top: -10px;
+            right: 15px;
             background: var(--kofi-color);
             color: black;
             font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
             display: none;
-            box-shadow: 0 4px 15px rgba(255, 221, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(255, 221, 0, 0.3);
         }
 
-        .controls-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        @media (max-width: 600px) { .controls-grid { grid-template-columns: 1fr; } }
-
-        .panel {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
-        }
-        .panel-title {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .scale-options { display: flex; gap: 10px; }
-        .scale-btn {
-            flex: 1;
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .scale-btn.active {
-            background: var(--kofi-color);
-            color: black;
-            border-color: var(--kofi-color);
-            box-shadow: 0 0 15px rgba(255, 221, 0, 0.2);
-        }
-
-        .setting-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .setting-row:last-child { margin-bottom: 0; }
-        .setting-info h4 { margin: 0 0 4px 0; font-size: 0.95rem; font-weight: 500; }
-        .setting-info p { margin: 0; font-size: 0.75rem; color: var(--text-muted); }
-
-        .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #3f3f46; transition: .3s; border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px;
-            background-color: white; transition: .3s; border-radius: 50%;
-        }
-        input:checked + .slider { background-color: var(--kofi-color); }
-        input:checked + .slider:before { transform: translateX(18px); }
-
+        /* Support Area with Animation */
         .support-area {
             text-align: center;
-            padding: 20px;
-            border-top: 1px solid var(--border);
-            margin-top: 10px;
+            padding: 10px 0;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.6s ease forwards;
+            animation-delay: 0.3s;
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
         }
         .kofi-btn-custom {
             display: inline-flex;
@@ -205,43 +155,115 @@
             gap: 8px;
             background: var(--kofi-color);
             color: black;
-            padding: 10px 20px;
-            border-radius: 30px;
+            padding: 8px 16px;
+            border-radius: 25px;
             font-weight: 700;
+            font-size: 0.9rem;
             text-decoration: none;
             transition: 0.3s;
-            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(255, 221, 0, 0.2);
         }
-        .kofi-btn-custom:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 221, 0, 0.4); }
+        .kofi-btn-custom:hover { 
+            transform: scale(1.05); 
+            box-shadow: 0 6px 20px rgba(255, 221, 0, 0.4); 
+        }
+        .support-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media (max-width: 600px) { .controls-grid { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+        }
+        .panel-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .scale-options { display: flex; gap: 8px; }
+        .scale-btn {
+            flex: 1;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .scale-btn.active {
+            background: var(--kofi-color);
+            color: black;
+            border-color: var(--kofi-color);
+            box-shadow: 0 0 10px rgba(255, 221, 0, 0.2);
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .setting-row:last-child { margin-bottom: 0; }
+        .setting-info h4 { margin: 0 0 2px 0; font-size: 0.9rem; font-weight: 500; }
+        .setting-info p { margin: 0; font-size: 0.7rem; color: var(--text-muted); }
+
+        .switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #3f3f46; transition: .3s; border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
+            background-color: white; transition: .3s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--kofi-color); }
+        input:checked + .slider:before { transform: translateX(16px); }
 
         .action-bar {
-            position: sticky;
-            bottom: 0;
-            background: var(--surface);
-            padding: 20px 30px;
+            padding: 15px 20px;
             border-top: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
+            background: var(--surface);
         }
 
         .progress-wrap { display: none; }
         .progress-track {
-            height: 6px; background: #27272a; border-radius: 3px; overflow: hidden;
+            height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;
         }
         .progress-fill {
             height: 100%; width: 0%; background: var(--kofi-color); transition: width 0.2s;
         }
-        .status-text { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 5px; }
+        .status-text { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 3px; }
 
         .btn-primary {
             width: 100%;
-            padding: 16px;
+            padding: 12px;
             background: var(--text-main);
             color: black;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-weight: 700;
             cursor: pointer;
             transition: 0.2s;
@@ -259,18 +281,26 @@
 <div class="app-container">
     <header>
         <div class="logo"><i class="fas fa-layer-group"></i> Super Upscaler</div>
-        <div style="font-size: 0.8rem; color: var(--text-muted);">PRO v2.0</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">PRO v2.0</div>
     </header>
 
     <div class="content">
-        <!-- Upload Zone - FIXED FOR MOBILE -->
+        <!-- Upload Zone -->
         <div class="upload-zone" id="uploadZone">
             <div id="fileBadge" class="file-count-badge">0</div>
             <i class="fas fa-cloud-upload-alt upload-icon"></i>
-            <h3 style="margin:0 0 8px 0;">Tap to Upload</h3>
-            <p style="color:var(--text-muted); margin:0; font-size:0.9rem;">Select photos from gallery</p>
+            <h3 style="margin:0 0 5px 0; font-size: 1.1rem;">Tap to Upload</h3>
+            <p style="color:var(--text-muted); margin:0; font-size:0.85rem;">Select photos from gallery</p>
         </div>
         <input type="file" id="fileInput" class="hidden-input" multiple accept="image/*" capture="">
+
+        <!-- Support Area with Animation -->
+        <div class="support-area">
+            <div class="support-text">Support the project development</div>
+            <a href="https://ko-fi.com/P5P31Y57TZ" target="_blank" class="kofi-btn-custom">
+                <i class="fas fa-coffee"></i> Buy me a coffee
+            </a>
+        </div>
 
         <div class="controls-grid">
             <div class="panel">
@@ -288,7 +318,7 @@
                 <div class="setting-row">
                     <div class="setting-info">
                         <h4>Smart Sharpen</h4>
-                        <p>Restores edge details</p>
+                        <p>Restores edges</p>
                     </div>
                     <label class="switch"><input type="checkbox" id="optSharpen" checked><span class="slider"></span></label>
                 </div>
@@ -296,7 +326,7 @@
                 <div class="setting-row">
                     <div class="setting-info">
                         <h4>Denoise</h4>
-                        <p>Removes grain/noise</p>
+                        <p>Removes noise</p>
                     </div>
                     <label class="switch"><input type="checkbox" id="optDenoise"><span class="slider"></span></label>
                 </div>
@@ -304,25 +334,10 @@
                 <div class="setting-row">
                     <div class="setting-info">
                         <h4>Vibrance</h4>
-                        <p>Boosts color saturation</p>
+                        <p>Boosts colors</p>
                     </div>
                     <label class="switch"><input type="checkbox" id="optColor" checked><span class="slider"></span></label>
                 </div>
-            </div>
-        </div>
-
-        <div class="support-area">
-            <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:10px;">Support the project development</p>
-            
-            <a href="https://ko-fi.com/P5P31Y57TZ" target="_blank" class="kofi-btn-custom">
-                <i class="fas fa-coffee"></i> Buy me a coffee on Ko-fi
-            </a>
-            
-            <div style="display:none;">
-                <script type='text/javascript'>
-                    kofiwidget2.init('Support me on Ko-fi', '#FFDD00', 'P5P31Y57TZ');
-                    kofiwidget2.draw();
-                </script>
             </div>
         </div>
     </div>
@@ -353,22 +368,18 @@
             const fileInput = document.getElementById('fileInput');
             const uploadZone = document.getElementById('uploadZone');
 
-            // Принудительно открываем выбор файлов при клике на зону
             uploadZone.addEventListener('click', () => {
                 fileInput.click();
             });
 
-            // Обработка выбора файлов
             fileInput.addEventListener('change', (e) => {
                 this.handleFiles(e);
             });
 
-            // Для iOS: сброс значения при повторном открытии
             fileInput.addEventListener('focus', () => {
                 fileInput.value = '';
             });
 
-            // Для старых iOS: принудительный триггер при потере фокуса
             fileInput.addEventListener('blur', () => {
                 if (fileInput.files && fileInput.files.length > 0) {
                     this.handleFiles({ target: fileInput });
