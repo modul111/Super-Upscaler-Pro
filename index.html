@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -264,12 +264,12 @@
 
     <div class="content">
         <!-- Upload Zone - FIXED FOR MOBILE -->
-        <label for="fileInput" class="upload-zone" id="uploadLabel">
+        <div class="upload-zone" id="uploadZone">
             <div id="fileBadge" class="file-count-badge">0</div>
             <i class="fas fa-cloud-upload-alt upload-icon"></i>
             <h3 style="margin:0 0 8px 0;">Tap to Upload</h3>
             <p style="color:var(--text-muted); margin:0; font-size:0.9rem;">Select photos from gallery</p>
-        </label>
+        </div>
         <input type="file" id="fileInput" class="hidden-input" multiple accept="image/*" capture="">
 
         <div class="controls-grid">
@@ -351,17 +351,24 @@
 
         init() {
             const fileInput = document.getElementById('fileInput');
-            
-            // Основная обработка
+            const uploadZone = document.getElementById('uploadZone');
+
+            // Принудительно открываем выбор файлов при клике на зону
+            uploadZone.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            // Обработка выбора файлов
             fileInput.addEventListener('change', (e) => {
                 this.handleFiles(e);
             });
 
-            // Дополнительная обработка для iOS/Android
+            // Для iOS: сброс значения при повторном открытии
             fileInput.addEventListener('focus', () => {
-                fileInput.value = ''; 
+                fileInput.value = '';
             });
 
+            // Для старых iOS: принудительный триггер при потере фокуса
             fileInput.addEventListener('blur', () => {
                 if (fileInput.files && fileInput.files.length > 0) {
                     this.handleFiles({ target: fileInput });
@@ -374,8 +381,8 @@
             this.files = files;
             
             const badge = document.getElementById('fileBadge');
-            const uploadZoneH3 = document.querySelector('#uploadLabel h3');
-            const uploadZoneP = document.querySelector('#uploadLabel p');
+            const uploadZoneH3 = document.querySelector('#uploadZone h3');
+            const uploadZoneP = document.querySelector('#uploadZone p');
 
             if (files.length > 0) {
                 badge.textContent = files.length;
