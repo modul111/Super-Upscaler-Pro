@@ -1,20 +1,24 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <!-- Эта строка критически важна для GitHub Pages -->
-    <base href="/"> 
+    <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Super Upscaler Pro</title>
+    
+    <!-- SEO -->
     <meta name="description" content="Free professional image upscaler. Enhance photos, remove noise, and upscale up to 6x directly in your browser. No server upload required.">
-<meta name="keywords" content="image upscaler, photo enhancer, ai upscaler, resize image, batch processor, free online tool">
-<meta property="og:title" content="Super Upscaler Pro - Free Image Enhancer">
-<meta property="og:image" content="https://modul111.github.io/Super-Upscaler-Pro/icon.png">
-    <!-- Иконки и Шрифты -->
+    <meta name="keywords" content="image upscaler, photo enhancer, ai upscaler, resize image, batch processor, free online tool">
+    <meta property="og:title" content="Super Upscaler Pro - Free Image Enhancer">
+    <meta property="og:description" content="Upscale images up to 6x with smart sharpening and denoising.">
+    <meta property="og:image" content="https://modul111.github.io/Super-Upscaler-Pro/icon.png">
+
+    <!-- Icons & Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="manifest" href="manifest.json">
-    <!-- JSZip (Обязательно через CDN) -->
+    
+    <!-- JSZip -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     
     <!-- Ko-fi Script -->
@@ -28,6 +32,7 @@
             --border: #27272a;
             --text-main: #ffffff;
             --text-muted: #a1a1aa;
+            --accent: #10b981;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -87,6 +92,7 @@
             gap: 30px;
         }
 
+        /* Upload Zone - FIXED FOR MOBILE */
         .upload-zone {
             border: 2px dashed var(--border);
             border-radius: 20px;
@@ -243,7 +249,7 @@
         }
         .btn-primary:hover { background: #e4e4e7; }
         .btn-primary.start { display: block; background: var(--kofi-color); }
-        .btn-primary.download { display: block; background: #10b981; color: white; }
+        .btn-primary.download { display: block; background: var(--accent); color: white; }
 
         .hidden-input { display: none; }
     </style>
@@ -257,13 +263,14 @@
     </header>
 
     <div class="content">
-        <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+        <!-- Upload Zone - FIXED FOR MOBILE -->
+        <label for="fileInput" class="upload-zone" id="uploadLabel">
             <div id="fileBadge" class="file-count-badge">0</div>
             <i class="fas fa-cloud-upload-alt upload-icon"></i>
-            <h3 style="margin:0 0 8px 0;">Upload Images</h3>
-            <p style="color:var(--text-muted); margin:0; font-size:0.9rem;">Drag & drop or click to select up to 100 files</p>
-        </div>
-        <input type="file" id="fileInput" class="hidden-input" multiple accept="image/*">
+            <h3 style="margin:0 0 8px 0;">Tap to Upload</h3>
+            <p style="color:var(--text-muted); margin:0; font-size:0.9rem;">Select photos from gallery</p>
+        </label>
+        <input type="file" id="fileInput" class="hidden-input" multiple accept="image/*" capture="">
 
         <div class="controls-grid">
             <div class="panel">
@@ -343,21 +350,47 @@
         zipBlob: null,
 
         init() {
-            document.getElementById('fileInput').addEventListener('change', (e) => {
-                this.files = Array.from(e.target.files);
-                const badge = document.getElementById('fileBadge');
-                
-                if (this.files.length > 0) {
-                    badge.textContent = this.files.length;
-                    badge.style.display = 'block';
-                    document.querySelector('.upload-zone h3').textContent = `${this.files.length} Files Selected`;
-                    document.querySelector('.upload-zone p').textContent = "Click to change selection";
-                } else {
-                    badge.style.display = 'none';
-                    document.querySelector('.upload-zone h3').textContent = "Upload Images";
-                    document.querySelector('.upload-zone p').textContent = "Drag & drop or click to select up to 100 files";
+            const fileInput = document.getElementById('fileInput');
+            
+            // Основная обработка
+            fileInput.addEventListener('change', (e) => {
+                this.handleFiles(e);
+            });
+
+            // Дополнительная обработка для iOS/Android
+            fileInput.addEventListener('focus', () => {
+                fileInput.value = ''; 
+            });
+
+            fileInput.addEventListener('blur', () => {
+                if (fileInput.files && fileInput.files.length > 0) {
+                    this.handleFiles({ target: fileInput });
                 }
             });
+        },
+
+        handleFiles(e) {
+            const files = Array.from(e.target.files);
+            this.files = files;
+            
+            const badge = document.getElementById('fileBadge');
+            const uploadZoneH3 = document.querySelector('#uploadLabel h3');
+            const uploadZoneP = document.querySelector('#uploadLabel p');
+
+            if (files.length > 0) {
+                badge.textContent = files.length;
+                badge.style.display = 'block';
+                uploadZoneH3.textContent = `${files.length} File${files.length > 1 ? 's' : ''} Selected`;
+                uploadZoneP.textContent = "Tap to change selection";
+                
+                document.getElementById('startBtn').style.display = 'block';
+                document.getElementById('downloadBtn').style.display = 'none';
+            } else {
+                badge.style.display = 'none';
+                uploadZoneH3.textContent = "Tap to Upload";
+                uploadZoneP.textContent = "Select photos from gallery";
+                document.getElementById('startBtn').style.display = 'none';
+            }
         },
 
         setScale(val) {
