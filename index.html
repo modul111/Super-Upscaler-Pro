@@ -26,7 +26,7 @@
 
     <style>
         :root {
-            --kofi-color: #FFDD00;
+            --kofi-color: #FFDD00; /* Жёлтый для прогресса, бейджей, кнопок масштаба */
             --bg-dark: #09090b;
             --surface: #18181b;
             --border: #27272a;
@@ -45,7 +45,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Запрещаем скролл на ПК */
+            overflow: hidden;
         }
 
         .app-container {
@@ -58,13 +58,13 @@
             border-radius: 20px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             position: relative;
-            overflow-y: auto; /* Разрешаем скролл только если нужно */
+            overflow-y: auto;
         }
 
         @media (min-width: 768px) {
             .app-container {
                 height: 90vh;
-                overflow: hidden; /* На ПК — без скролла */
+                overflow: hidden;
             }
         }
 
@@ -127,7 +127,7 @@
             position: absolute;
             top: -10px;
             right: 15px;
-            background: var(--kofi-color);
+            background: var(--kofi-color); /* Жёлтый бейдж */
             color: black;
             font-weight: 700;
             padding: 4px 10px;
@@ -153,19 +153,19 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--kofi-color);
-            color: black;
+            background: #ef25af; /* РОЗОВАЯ КНОПКА */
+            color: white;
             padding: 8px 16px;
             border-radius: 25px;
             font-weight: 700;
             font-size: 0.9rem;
             text-decoration: none;
             transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(255, 221, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(239, 37, 175, 0.3);
         }
         .kofi-btn-custom:hover { 
             transform: scale(1.05); 
-            box-shadow: 0 6px 20px rgba(255, 221, 0, 0.4); 
+            box-shadow: 0 6px 20px rgba(239, 37, 175, 0.5); 
         }
         .support-text {
             font-size: 0.8rem;
@@ -209,7 +209,7 @@
             transition: 0.2s;
         }
         .scale-btn.active {
-            background: var(--kofi-color);
+            background: var(--kofi-color); /* ЖЁЛТЫЕ АКТИВНЫЕ КНОПКИ */
             color: black;
             border-color: var(--kofi-color);
             box-shadow: 0 0 10px rgba(255, 221, 0, 0.2);
@@ -235,7 +235,7 @@
             position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
             background-color: white; transition: .3s; border-radius: 50%;
         }
-        input:checked + .slider { background-color: var(--kofi-color); }
+        input:checked + .slider { background-color: var(--kofi-color); /* ЖЁЛТЫЕ ПЕРЕКЛЮЧАТЕЛИ */ }
         input:checked + .slider:before { transform: translateX(16px); }
 
         .action-bar {
@@ -252,7 +252,8 @@
             height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;
         }
         .progress-fill {
-            height: 100%; width: 0%; background: var(--kofi-color); transition: width 0.2s;
+            height: 100%; width: 0%; background: var(--kofi-color); /* ЖЁЛТЫЙ ПРОГРЕСС-БАР */
+            transition: width 0.2s;
         }
         .status-text { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 3px; }
 
@@ -270,7 +271,7 @@
             display: none;
         }
         .btn-primary:hover { background: #e4e4e7; }
-        .btn-primary.start { display: block; background: var(--kofi-color); }
+        .btn-primary.start { display: block; background: var(--kofi-color); /* ЖЁЛТАЯ КНОПКА START */ }
         .btn-primary.download { display: block; background: var(--accent); color: white; }
 
         .hidden-input { display: none; }
