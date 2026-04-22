@@ -1,1 +1,1 @@
-https://modul111.github.io/Super-Upscaler-Pro/ <img width="1920" height="1053" alt="superupscaler" src="https://github.com/user-attachments/assets/77cdf22a-0923-49ef-9a32-6979f41bb758" />
+https://modul111.github.io/Super-Upscaler-Pro/  <img width="1920" height="1014" alt="Opera Знімок_2026-04-22_095314_modul111 github io" src="https://github.com/user-attachments/assets/25bdd2e3-cafe-462b-b4bd-d59c5eb9036b" />
